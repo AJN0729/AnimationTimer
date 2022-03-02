@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(R.layout.activity_main)
+        setContentView(binding.root)
 
         binding.startButton.setOnClickListener { startStopTimer() }
         binding.resetButton.setOnClickListener { resetTimer() }
@@ -58,12 +58,18 @@ class MainActivity : AppCompatActivity() {
         else startTimer()
     }
 
-    private fun stopTimer() {
-        TODO("Not yet implemented")
-    }
-
     private fun startTimer() {
-        TODO("Not yet implemented")
+        serviceIntent.putExtra(TimeService.TIME_EXTRA, time)
+        startService(serviceIntent)
+        binding.startButton.text = "Stop"
+        binding.startButton.icon = getDrawable(R.drawable.ic_baseline_pause_24)
+        timeStarted = true
     }
 
+    private fun stopTimer() {
+        stopService(serviceIntent)
+        binding.startButton.text = "Start"
+        binding.startButton.icon = getDrawable(R.drawable.ic_baseline_play_arrow_24)
+        timeStarted = false
+    }
 }
